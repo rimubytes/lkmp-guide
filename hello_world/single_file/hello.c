@@ -1,6 +1,6 @@
 #include <linux/init.h>  /*For module_init and module_exit macros*/
 #include <linux/module.h> /*For all modules*/
-#include <linux.kernel.h> /*For KERN_INFO and printk*/
+#include <linux/kernel.h> /*For KERN_INFO and printk*/
 
 MODULE_DESCRIPTION("A simple Kello World Linux Kernel module");
 MODULE_VERSION("2.0");
