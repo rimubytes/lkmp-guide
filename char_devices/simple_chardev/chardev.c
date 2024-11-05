@@ -44,3 +44,19 @@ static int device_open_func(struct inode *inode, struct file *file) {
     return 0;
 }
 
+static int device_release_func(struct inode *inode, struct file *file) {
+    /*
+     * Called when the device file is closed.
+     *
+     * @param inode: The inode of the device file.
+     * @param file: The file object associated with the closed device.
+     * @return 0 on success.
+     */
+    printk(KERN_DEBUG "device_release(%p, %p)\n", inode, file);
+
+    // Decrement the module's use count
+    device_open--;
+    MOD_DEC_USE_COUNT();
+
+    return 0;
+}
