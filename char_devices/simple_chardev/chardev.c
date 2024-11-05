@@ -114,3 +114,26 @@ static struct file_operations fops = {
     .open = device_open_func,
     .release = device_release_func,
 };
+
+static int __init init_module(void) {
+    /*
+     * Initializes the module by registering the character device.
+     *
+     * @return 0 on success, negative value on error.
+     */
+    int major;
+
+    // Register the character device
+    major = register_chrdev(0, DEVICE_NAME, &fops);
+    if (major < 0) {
+        printk(KERN_ERR "Sorry, registering the character device failed with %d\n", major);
+        return major;
+    }
+
+    printk(KERN_INFO "Registration is a success. The major device number is %d.\n", major);
+    printk(KERN_INFO "If you want to talk to the device driver, you'll have to create a device file.\n");
+    printk(KERN_INFO "We suggest you use: mknod <name> c %d <minor>\n", major);
+    printk(KERN_INFO "You can try different minor numbers and see what happens.\n");
+
+    return 0;
+}
