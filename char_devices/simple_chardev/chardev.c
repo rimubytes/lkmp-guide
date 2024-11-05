@@ -94,3 +94,17 @@ static ssize_t device_read_func(struct file *file, char *buffer, size_t length, 
 
     return bytes_read;
 }
+
+static ssize_t device_write_func(struct file *file, const char *buffer, size_t length, loff_t *offset) {
+    /*
+     * Called when the device file is written to, but not implemented in this example.
+     *
+     * @param file: The file object associated with the write operation.
+     * @param buffer: The buffer containing the data to write.
+     * @param length: The length of the buffer.
+     * @param offset: The offset in the file.
+     * @return -EINVAL, indicating that writing to the device is not supported.
+     */
+    return -EINVAL;
+}
+
