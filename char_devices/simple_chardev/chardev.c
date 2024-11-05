@@ -60,3 +60,37 @@ static int device_release_func(struct inode *inode, struct file *file) {
 
     return 0;
 }
+
+static ssize_t device_read_func(struct file *file, char *buffer, size_t length, loff_t *offset) {
+    /*
+     * Called when the device file is read from.
+     *
+     * @param file: The file object associated with the read operation.
+     * @param buffer: The buffer to fill with data.
+     * @param length: The length of the buffer.
+     * @param offset: The offset in the file.
+     * @return The number of bytes read, and the new offset in the file.
+     */
+    int bytes_read = 0;
+
+    // If we're at the end of the message, return 0 (which signifies end of file)
+    if (*message_ptr == 0) {
+        return 0;
+    }
+
+    // Copy the data from the message to the buffer
+    while (length && *message_ptr) {
+        // Because the buffer is in the user data segment, not the kernel data segment,
+        // assignment wouldn't work. Instead, we have to use put_user which copies data
+        // from the kernel data segment to the user data segment.
+        put_user(*message_ptr, buffer);
+        message_ptr++;
+        buffer++;
+        length--;
+        bytes_read++;
+    }
+
+    printk(KERN_DEBUG "Read %d bytes, %d left\n", bytes_read, length);
+
+    return bytes_read;
+}
