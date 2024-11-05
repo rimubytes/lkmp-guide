@@ -137,3 +137,19 @@ static int __init init_module(void) {
 
     return 0;
 }
+
+static void __exit cleanup_module(void) {
+    /*
+     * Cleans up the module by unregistering the character device.
+     */
+    int ret;
+
+    // Unregister the device
+    ret = unregister_chrdev(major, DEVICE_NAME);
+    if (ret < 0) {
+        printk(KERN_ERR "Error in unregister_chrdev: %d\n", ret);
+    }
+}
+
+module_init(init_module);
+module_exit(cleanup_module);
