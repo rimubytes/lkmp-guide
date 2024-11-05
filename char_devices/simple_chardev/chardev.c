@@ -108,3 +108,9 @@ static ssize_t device_write_func(struct file *file, const char *buffer, size_t l
     return -EINVAL;
 }
 
+static struct file_operations fops = {
+    .read = device_read_func,
+    .write = device_write_func,
+    .open = device_open_func,
+    .release = device_release_func,
+};
