@@ -26,3 +26,18 @@ clean:
 	@echo "Cleaning up build files"
 	$(MAKE) -C $(KDIR) M=$(PWD) clean
 	rm -f Module.markers Module.symvers
+
+# Install the module
+install:
+	@echo "Installing $(MODULE_NAME) module"
+	sudo insmod ./$(MODULE_NAME).ko
+	@echo "Checking module status"
+	lsmod | grep $(MODULE_NAME)
+	@echo "Module proc file created at /proc/$(MODULE_NAME)"
+
+# Uninstall the module
+uninstall:
+	@echo "Removing $(MODULE_NAME) module"
+	sudo rmmod $(MODULE_NAME)
+	@echo "Verifying module removal"
+	lsmod | grep $(MODULE_NAME) || echo "Module successfully unloaded"
