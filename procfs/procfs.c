@@ -65,3 +65,36 @@ static int procfile_read(char *buffer, char **buffer_location, off_t offset, int
     *buffer_location = message_buffer;
     return len;
 }
+
+/* Proc file entry structure */
+static struct proc_dir_entry proc_file = {
+    .name = PROC_FILENAME,
+    .mode = PROC_PERMS,
+    .nlink = 1,
+    .uid = 0,
+    .gid = 0,
+    .size = MAX_BUFFER_SIZE,
+    .read_proc = procfile_read,
+};
+
+/**
+ * init_module - Module initialization function
+ * 
+ * Registers the proc file in the /proc filesystem
+ * 
+ * Return: 0 on success, negative on failure
+ */
+static int __init proc_init(void)
+{
+    int ret;
+
+    ret = proc_register(&proc_root, &proc_file);
+    if (ret < 0) {
+        printk(KERN_ERR "Failed to register proc file\n");
+        return ret;
+    }
+
+    printk(KERN_INFO "Proc file '%s' created\n", PROC_FILENAME);
+    return 0;
+}
+
