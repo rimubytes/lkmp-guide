@@ -98,3 +98,16 @@ static int __init proc_init(void)
     return 0;
 }
 
+/**
+ * cleanup_module - Module cleanup function
+ *
+ * Unregisters the proc file from the /proc filesystem.
+ */
+static void __exit proc_cleanup(void)
+{
+    proc_unregister(&proc_root, proc_file.low_ino);
+    printk(KERN_INFO "Proc file '%s' removed\n", PROC_FILENAME);
+}
+
+module_init(proc_init);
+module_exit(proc_cleanup);
