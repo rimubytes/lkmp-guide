@@ -69,3 +69,14 @@ docs:
 # Phony targets
 .PHONY: all module clean install uninstall info debug checkpatch docs
 
+# Help target
+help:
+	@echo "Makefile targets:"
+	@echo "  all        - Build the kernel module"
+	@echo "  clean      - Remove compiled files"
+	@echo "  install    - Load the kernel module"
+	@echo "  uninstall  - Unload the kernel module"
+	@echo "  info       - Display module information"
+	@echo "  debug      - Show module debug information"
+	@echo "  checkpatch - Check code style and potential issues"
+	@echo "  docs       - Generate documentation"
