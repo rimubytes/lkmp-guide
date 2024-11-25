@@ -41,3 +41,31 @@ uninstall:
 	sudo rmmod $(MODULE_NAME)
 	@echo "Verifying module removal"
 	lsmod | grep $(MODULE_NAME) || echo "Module successfully unloaded"
+
+# Show module information
+info:
+	@echo "Module Name: $(MODULE_NAME)"
+	@echo "Kernel Version: $(shell uname -r)"
+	@echo "Kernel Source: $(KDIR)"
+
+# Debugging target to check module parameters
+debug:
+	@echo "Debug information:"
+	modinfo ./$(MODULE_NAME).ko
+
+# Check module for potential issues
+checkpatch:
+	@if [ -x /usr/src/linux/scripts/checkpatch.pl ]; then \
+		/usr/src/linux/scripts/checkpatch.pl -f $(MODULE_NAME).c; \
+	else \
+		echo "checkpatch.pl not found"; \
+	fi
+
+# Create documentation
+docs:
+	@mkdir -p docs
+	@kerneldoc -html $(MODULE_NAME).c > docs/$(MODULE_NAME)_docs.html
+
+# Phony targets
+.PHONY: all module clean install uninstall info debug checkpatch docs
+
