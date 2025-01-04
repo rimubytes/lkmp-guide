@@ -60,3 +60,14 @@ static int device_release(struct inode *inode, struct file *file)
     return SUCCESS;
 }
 
+/**
+ * device_read - Called when a process reads from the device
+ * @file: Pointer to file object
+ * @buffer: Buffer to fill with data
+ * @length: Length of the buffer
+ * @offset: Offset in the file
+ *
+ * Copies data from kernel space to user space
+ * 
+ * Return: Number of bytes read
+ */
