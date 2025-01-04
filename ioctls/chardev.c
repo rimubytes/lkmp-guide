@@ -22,3 +22,14 @@ static int device_open = 0;
 static char device_message[DEVICE_MAX_LEN];
 static char *message_ptr;
 
+/**
+ * device_open - Called when a process attempts to open the device file
+ * @inode: Pointer to inode object
+ * @file: Pointer to file object
+ *
+ * Handles device opening and initialization
+ * 
+ * Return: 0 on success, -EBUSY if device is already open
+ */
+
+
