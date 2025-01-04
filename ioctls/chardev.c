@@ -32,4 +32,15 @@ static char *message_ptr;
  * Return: 0 on success, -EBUSY if device is already open
  */
 
+static int device_open(struct inode *inode, struct file *file)
+{
+    if (device_open)
+        return -EBUSY;
+
+    device_open++;
+    message_ptr = device_message;
+    MOD_INC_USE_COUNT;
+    
+    return SUCCESS;
+}
 
