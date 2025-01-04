@@ -44,3 +44,19 @@ static int device_open(struct inode *inode, struct file *file)
     return SUCCESS;
 }
 
+/**
+ * device_release - Called when a process closes the device file
+ * @inode: Pointer to inode object
+ * @file: Pointer to file object
+ *
+ * Handles device cleanup and release
+ * 
+ * Return: 0 on success
+ */
+static int device_release(struct inode *inode, struct file *file)
+{
+    device_open--;
+    MOD_DEC_USE_COUNT;
+    return SUCCESS;
+}
+
