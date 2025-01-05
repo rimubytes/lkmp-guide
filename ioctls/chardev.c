@@ -96,3 +96,31 @@ static ssize_t device_write(struct file *file, const char *buffer,
  * Return: Depends on the IOCTL command
  */
 
+static int device_ioctl(struct inode *inode, struct file *file,
+                       unsigned int ioctl_num, unsigned long ioctl_param)
+{
+    int i;
+    char *temp;
+    char ch;
+
+    switch (ioctl_num) {
+    case IOCTL_SET_MSG:
+        temp = (char *)ioctl_param;
+        get_user(ch, temp);
+        for (i = 0; ch && i < DEVICE_MAX_LEN; i++, temp++)
+            get_user(ch, temp);
+        device_write(file, (char *)ioctl_param, i, 0);
+        break;
+
+    case IOCTL_GET_MSG:
+        i = device_read(file, (char *)ioctl_param, DEVICE_MAX_LEN - 1, 0);
+        put_user('\0', (char *)ioctl_param + i);
+        break;
+
+    case IOCTL_GET_NTH_BYTE:
+        return device_message[ioctl_param];
+    }
+
+    return SUCCESS;
+}
+
