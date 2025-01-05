@@ -84,3 +84,15 @@ static ssize_t device_write(struct file *file, const char *buffer,
     return i;
 }
 
+/**
+ * device_ioctl - Called when a process performs an ioctl on the device
+ * @inode: Pointer to inode object
+ * @file: Pointer to file object
+ * @ioctl_num: IOCTL command number
+ * @ioctl_param: IOCTL parameter
+ *
+ * Handles various IOCTL commands for the device
+ * 
+ * Return: Depends on the IOCTL command
+ */
+
