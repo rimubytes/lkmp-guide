@@ -71,3 +71,16 @@ static int device_release(struct inode *inode, struct file *file)
  * 
  * Return: Number of bytes read
  */
+
+static ssize_t device_write(struct file *file, const char *buffer,
+                           size_t length, loff_t *offset)
+{
+    int i;
+
+    for (i = 0; i < length && i < DEVICE_MAX_LEN; i++)
+        get_user(device_message[i], buffer + i);
+
+    message_ptr = device_message;
+    return i;
+}
+
