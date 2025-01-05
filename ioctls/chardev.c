@@ -124,3 +124,35 @@ static int device_ioctl(struct inode *inode, struct file *file,
     return SUCCESS;
 }
 
+/* File operations structure */
+static struct file_operations fops = {
+    .read = device_read,
+    .write = device_write,
+    .ioctl = device_ioctl,
+    .open = device_open,
+    .release = device_release
+};
+
+/**
+ * init_module - Module initialization function
+ *
+ * Registers the character device
+ * 
+ * Return: 0 on success, negative on failure
+ */
+static int __init init_module(void)
+{
+    int ret;
+
+    ret = register_chrdev(MAJOR_NUM, DEVICE_NAME, &fops);
+    if (ret < 0) {
+        printk(KERN_ERR "Failed to register device: %d\n", ret);
+        return ret;
+    }
+
+    printk(KERN_INFO "Device registered successfully with major number %d\n", MAJOR_NUM);
+    printk(KERN_INFO "Create device with: mknod %s c %d 0\n", 
+           DEVICE_FILE_NAME, MAJOR_NUM);
+
+    return SUCCESS;
+}
